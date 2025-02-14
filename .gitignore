@@ -12,6 +12,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+tests-examples
 
 coverage
 .nyc_output
