@@ -36,9 +36,10 @@ jobs:
           npm ci && npm run build
           cp dist/index.html dist/404.html
 
-      - name: Update pages artifact
+      - name: Update dist artifact
         uses: actions/upload-artifact@v4
         with:
+          name: package
           path: dist/
     #this is another job
   deploy:
