@@ -9,9 +9,9 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | View home page                                      |                 home.tsx   | none                  | none             |
 | Register new user<br/>(t@jwt.com, pw: test)         |register.tsx                    |[POST] /api/auth                   |              |
 | Login new user<br/>(t@jwt.com, pw: test)            | login.tsx                   | [PUT] /api/auth                  |              |
-| Order pizza                                         |                    |                   |              |
+| Order pizza                                         |menu.tsx                    | [GET] /api/order/menu                   |              |
 | Verify pizza                                        |                    |                   |              |
-| View profile page                                   |                    |                   |              |
+| View profile page                                   |dinerDashboard.tsx                    |[GET] /api/order                   |              |
 | View franchise<br/>(as diner)                       |                    |                   |              |
 | Logout                                              | logout.tsx                   | [DELETE] /api/auth                   |              |
 | View About page                                     |                    |                   |              |
