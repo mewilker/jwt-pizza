@@ -16,14 +16,14 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | Logout                                              | logout.tsx | [DELETE] /api/auth                   | `DELETE FROM auth WHERE token=?`             |
 | View About page                                     | about.tsx |none                   | none             |
 | View History page                                   | history.tsx  | none                  | none             |
-| Login as franchisee<br/>(f@jwt.com, pw: franchisee) | login.tsx | [PUT] /api/auth                  |              |
-| View franchise<br/>(as franchisee)                  | franchiseDashboard.tsx | [GET] /api/franchise/\<userid>                    |              |
-| Create a store                                      |createStore.tsx  |[POST] /api/franchise/\<franchiseid>/store                   |              |
-| Close a store                                       | closeStore.tsx |[DELETE] /api/franchise/\<franchiseid>/store/\<storeid>                   |              |
-| Login as admin<br/>(a@jwt.com, pw: admin)           | login.tsx |[PUT] /api/auth                   |              |
-| View Admin page                                     | adminDashboard.tsx |[GET] /api/franchise?page=0&limit=3&name=*                   |              |
-| Create a franchise for t@jwt.com                    |createFranchise.tsx  |[POST]/api/franchise                   |              |
-| Close the franchise for t@jwt.com                   | closeFranchise.tsx | [DELETE] /api/franchise/\<franchiseid>                  |              |
+| Login as franchisee<br/>(f@jwt.com, pw: franchisee) | login.tsx | [PUT] /api/auth                  | `SELECT * FROM user WHERE email=?` <br> `SELECT * FROM userRole WHERE userId=? ` <br> `INSERT INTO auth (token, userId) VALUES (?, ?) ON DUPLICATE KEY UPDATE token=token`              |
+| View franchise<br/>(as franchisee)                  | franchiseDashboard.tsx | [GET] /api/franchise/\<userid>                    | `SELECT objectId FROM userRole WHERE role='franchisee' AND userId=?`<br> `SELECT id, name FROM franchise WHERE id in (${franchiseIds.join(',')})`             |
+| Create a store                                      |createStore.tsx  |[POST] /api/franchise/\<franchiseid>/store                   | `SELECT u.id, u.name, u.email FROM userRole AS ur JOIN user AS u ON u.id=ur.userId WHERE ur.objectId=? AND ur.role='franchisee'` <br> `SELECT s.id, s.name, COALESCE(SUM(oi.price), 0) AS totalRevenue FROM dinerOrder AS do JOIN orderItem AS oi ON do.id=oi.orderId RIGHT JOIN store AS s ON s.id=do.storeId WHERE s.franchiseId=? GROUP BY s.id` <br> `INSERT INTO store (franchiseId, name) VALUES (?, ?)`              |
+| Close a store                                       | closeStore.tsx |[DELETE] /api/franchise/\<franchiseid>/store/\<storeid>                   | `SELECT u.id, u.name, u.email FROM userRole AS ur JOIN user AS u ON u.id=ur.userId WHERE ur.objectId=? AND ur.role='franchisee'` <br> `SELECT s.id, s.name, COALESCE(SUM(oi.price), 0) AS totalRevenue FROM dinerOrder AS do JOIN orderItem AS oi ON do.id=oi.orderId RIGHT JOIN store AS s ON s.id=do.storeId WHERE s.franchiseId=? GROUP BY s.id` <br> `DELETE FROM store WHERE franchiseId=? AND id=?`             |
+| Login as admin<br/>(a@jwt.com, pw: admin)           | login.tsx |[PUT] /api/auth                   |`SELECT * FROM user WHERE email=?` <br> `SELECT * FROM userRole WHERE userId=? ` <br> `INSERT INTO auth (token, userId) VALUES (?, ?) ON DUPLICATE KEY UPDATE token=token`              |
+| View Admin page                                     | adminDashboard.tsx |[GET] /api/franchise?page=0&limit=3&name=*                   | `SELECT id, name FROM franchise WHERE name LIKE ? LIMIT ${limit + 1} OFFSET ${offset}`             |
+| Create a franchise for t@jwt.com                    |createFranchise.tsx  |[POST]/api/franchise                   |`SELECT id, name FROM user WHERE email=?`<br> `INSERT INTO franchise (name) VALUES (?)` <br> `INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)`              |
+| Close the franchise for t@jwt.com                   | closeFranchise.tsx | [DELETE] /api/franchise/\<franchiseid>                  |`DELETE FROM store WHERE franchiseId=?`<br> `DELETE FROM userRole WHERE objectId=?`<br> `DELETE FROM franchise WHERE id=?`              |
 
 ## Vulnerabilities:
 
