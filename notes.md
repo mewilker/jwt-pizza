@@ -12,10 +12,10 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | Order pizza                                         |menu.tsx <br> payment.tsx <br> delivery.tsx                   | [GET] /api/order/menu <br> [GET] api/franchise?page=0&limit=20& name=*<br> [POST] /api/order                |              |
 | Verify pizza                                        |delivery.tsx                    |  [POST] https://pizza-factory.cs329.click/api/order/verify                 |              |
 | View profile page                                   |dinerDashboard.tsx                    |[GET] /api/order                   |              |
-| View franchise<br/>(as diner)                       |                    |                   |              |
+| View franchise<br/>(as diner)                       | franchiseDashboard.tsx                   |[GET] /api/franchise/2                  |              |
 | Logout                                              | logout.tsx                   | [DELETE] /api/auth                   |              |
-| View About page                                     |                    |                   |              |
-| View History page                                   |                    |                   |              |
+| View About page                                     | about.tsx                   |none                   | none             |
+| View History page                                   | history.tsx                    | none                  | none             |
 | Login as franchisee<br/>(f@jwt.com, pw: franchisee) |                    |                   |              |
 | View franchise<br/>(as franchisee)                  |                    |                   |              |
 | Create a store                                      |                    |                   |              |
