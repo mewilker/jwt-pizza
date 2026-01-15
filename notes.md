@@ -7,13 +7,13 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | User activity                                       | Frontend component | Backend endpoints | Database SQL |
 | --------------------------------------------------- | ------------------ | ----------------- | ------------ |
 | View home page                                      | home.tsx | none                  | none             |
-| Register new user<br/>(t@jwt.com, pw: test)         | register.tsx  |[POST] /api/auth                   |`INSERT INTO user (name, email, password) VALUES (?, ?, ?)`<br> `INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)`              |
-| Login new user<br/>(t@jwt.com, pw: test)            | login.tsx | [PUT] /api/auth                  |`SELECT * FROM user WHERE email=?` <br> `SELECT * FROM userRole WHERE userId=?`             |
-| Order pizza                                         |menu.tsx <br> payment.tsx <br> delivery.tsx | [GET] /api/order/menu <br> [GET] api/franchise?page=0&limit=20& name=*<br> [POST] /api/order                |`SELECT * FROM menu`<br>              |
-| Verify pizza                                        |delivery.tsx  |  [POST] https://pizza-factory.cs329.click/api/order/verify                 |              |
-| View profile page                                   |dinerDashboard.tsx  |[GET] /api/order                   |              |
-| View franchise<br/>(as diner)                       | franchiseDashboard.tsx |[GET] /api/franchise/\<userid>                  |              |
-| Logout                                              | logout.tsx | [DELETE] /api/auth                   |              |
+| Register new user<br/>(t@jwt.com, pw: test)         | register.tsx  |[POST] /api/auth                   |`INSERT INTO user (name, email, password) VALUES (?, ?, ?)`<br> `INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)` <br> `INSERT INTO auth (token, userId) VALUES (?, ?) ON DUPLICATE KEY UPDATE token=token`             |
+| Login new user<br/>(t@jwt.com, pw: test)            | login.tsx | [PUT] /api/auth                  |`SELECT * FROM user WHERE email=?` <br> `SELECT * FROM userRole WHERE userId=? ` <br> `INSERT INTO auth (token, userId) VALUES (?, ?) ON DUPLICATE KEY UPDATE token=token`           |
+| Order pizza                                         |menu.tsx <br> payment.tsx <br> delivery.tsx | [GET] /api/order/menu <br> [GET] api/franchise?page=0&limit=20& name=*<br> [POST] /api/order                |`SELECT * FROM menu`<br> `SELECT id, name FROM franchise WHERE name LIKE ? LIMIT ${limit + 1} OFFSET ${offset}` <br> `INSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now())` <br> `INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?)`             |
+| Verify pizza                                        |delivery.tsx  |  [POST] https://pizza-factory.cs329.click/api/order/verify                 | unknown / none local             |
+| View profile page                                   |dinerDashboard.tsx  |[GET] /api/order                   | `SELECT id, franchiseId, storeId, date FROM dinerOrder WHERE dinerId=? LIMIT ${offset},${config.db.listPerPage}` <br> `SELECT id, menuId, description, price FROM orderItem WHERE orderId=?`              |
+| View franchise<br/>(as diner)                       | franchiseDashboard.tsx |[GET] /api/franchise/\<userid>                  | `SELECT objectId FROM userRole WHERE role='franchisee' AND userId=?`             |
+| Logout                                              | logout.tsx | [DELETE] /api/auth                   | `DELETE FROM auth WHERE token=?`             |
 | View About page                                     | about.tsx |none                   | none             |
 | View History page                                   | history.tsx  | none                  | none             |
 | Login as franchisee<br/>(f@jwt.com, pw: franchisee) | login.tsx | [PUT] /api/auth                  |              |
@@ -24,3 +24,11 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | View Admin page                                     | adminDashboard.tsx |[GET] /api/franchise?page=0&limit=3&name=*                   |              |
 | Create a franchise for t@jwt.com                    |createFranchise.tsx  |[POST]/api/franchise                   |              |
 | Close the franchise for t@jwt.com                   | closeFranchise.tsx | [DELETE] /api/franchise/\<franchiseid>                  |              |
+
+## Vulnerabilities:
+
+- Franchise get is not sanitized see Order Pizza
+- calls to AuthRouter.authenticateToken do not seem to do much... possible that the router checks first in service look into it
+
+## Comments:
+ - User Router doesn't seem to have much use... or implementation for that matter
