@@ -29,6 +29,11 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 
 - Franchise get is not sanitized see Order Pizza
 - calls to AuthRouter.authenticateToken do not seem to do much... possible that the router checks first in service look into it
+- config is available in the documentation call
+- duplicate emails uses are allowed, despite that being the username
+- default admin is public information
 
 ## Comments:
  - User Router doesn't seem to have much use... or implementation for that matter
+ - deleted an unused update user database method... was that for the user router?
+ - if user sends in a email without a password what happens?
