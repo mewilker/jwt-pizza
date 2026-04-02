@@ -25,6 +25,7 @@ Crontab files are used to define the schedule for which jobs should run. Comment
 
 ```
 CRON_TZ=Japan # set the timezone to run in
+MAILTO="username@example.com" # assumes the system is set up with a mail system like msmtp or Postfix
 #┌───────────── minute (0 - 59)
 #│ ┌───────────── hour (0 - 23)
 #│ │ ┌───────────── day of the month (1 - 31)
