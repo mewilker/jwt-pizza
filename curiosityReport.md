@@ -44,13 +44,13 @@ A list of times can be set by adding a range with a `-` (`mon-fri`) or by listin
 
 There is also support for step values, which allows you to define a range and step over a range of values. For example, `0-29/15` in the minutes column would cause the job to execute at the top of the hour and 15 minutes past. This can also be used with asterisks, so `*/15` would cause the program to run every 15 minutes.
 
-Crontabs are in installed with the `crontab` command. A user can be specified with the `-u` command, and the file can be tested with the `-T` command to make sure the syntax is correct before install. Here's an example of using these commands
+Crontabs are in installed with the `crontab` command. A user can be specified with the `-u` command, and the file can be tested with the `-n` command to make sure the syntax is correct before install. Here's an example of using these commands
 
 ```
-crontab -u root -T myCrontab
+crontab -u root -n myCrontab
 ```
 
-When ready to install the Crontab, the `-T` should be omitted. 
+When ready to install the Crontab, the `-n` should be omitted. 
 
 ## Windows Users
 Although Cron is not a Windows feature, there is the Task Scheduler, which accomplishes the same goal. The process is similar to defining a Crontab. A trigger needs to be defined, as well as an action—the custom script. Below is an example of the GUI, however, the following can be done from the command line as well.
